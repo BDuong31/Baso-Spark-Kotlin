@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "134360779568",
+    "project_id": "baso-spark",
+    "storage_bucket": "baso-spark.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134360779568:android:212a0a45fbb0593c2716f5",
+        "android_client_info": {
+          "package_name": "basostudio.basospark"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfesLLzlFvbQxLutvFLEXUBGxdxwIU9oc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
