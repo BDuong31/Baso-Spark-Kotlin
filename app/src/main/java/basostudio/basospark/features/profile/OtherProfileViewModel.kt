@@ -1,6 +1,7 @@
 package basostudio.basospark.features.profile.other_profile
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -43,12 +44,13 @@ class OtherProfileViewModel @Inject constructor(
                 val profileRes = userRepository.getProfile(userId)
                 val followRes = userRepository.hasFollowed(userId)
                 // Backend cần hỗ trợ lọc bài đăng theo userId
-                val postsRes = postRepository.getPosts(1, 50)
+                val postsRes = postRepository.getPosts(1, 50, userId, "")
 
                 if (profileRes.isSuccessful && followRes.isSuccessful && postsRes.isSuccessful) {
                     val user = profileRes.body()!!.data
                     val isFollowing = followRes.body()!!.data
-                    val userPosts = postsRes.body()!!.data.filter { it.author.id == userId }
+                    val userPosts = postsRes.body()!!.data
+                    Log.d("OtherProfileViewModel", "User posts: $userPosts")
                     _uiState.value = OtherProfileUiState.Success(user, userPosts, isFollowing)
                 } else {
                     _uiState.value = OtherProfileUiState.Error("Failed to load profile")

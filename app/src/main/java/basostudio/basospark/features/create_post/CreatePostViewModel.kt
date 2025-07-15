@@ -3,13 +3,18 @@ package basostudio.basospark.features.create_post
 import android.app.Application
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import basostudio.basospark.core.util.Result
+import basostudio.basospark.data.model.Topic
 import basostudio.basospark.data.remote.dto.CreatePostRequest
 import basostudio.basospark.data.repository.PostRepository
+import basostudio.basospark.data.repository.TopicRepository
+import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -26,30 +31,63 @@ sealed interface CreatePostUiState {
 @HiltViewModel
 class CreatePostViewModel @Inject constructor(
     private val postRepository: PostRepository,
+    private val topicRepository: TopicRepository,
     private val application: Application
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<CreatePostUiState>(CreatePostUiState.Idle)
-    val uiState: StateFlow<CreatePostUiState> = _uiState
+    val uiState = _uiState.asStateFlow()
+
+    private val _topics = MutableStateFlow<List<Topic>>(emptyList())
+    val topics = _topics.asStateFlow()
+
+    var selectedTopic = mutableStateOf<Topic?>(null)
+        private set
+
+    init {
+        // Tải danh sách chủ đề ngay khi ViewModel được tạo
+        fetchTopics()
+    }
+
+    private fun fetchTopics() {
+        viewModelScope.launch {
+            when (val result = topicRepository.getTopics()) {
+                is Result.Success -> {
+                    _topics.value = result.data.data
+                    // Tự động chọn chủ đề đầu tiên làm mặc định nếu có
+                    if (result.data.data.isNotEmpty()) {
+                        selectedTopic.value = result.data.data.first()
+                    }
+                }
+                is Result.Error -> {
+                    _uiState.value = CreatePostUiState.Error("Không tải được chủ đề: ${result.message}")
+                }
+                else -> {}
+            }
+        }
+    }
+
+    fun onTopicSelected(topic: Topic) {
+        selectedTopic.value = topic
+    }
+    // --- KẾT THÚC BỔ SUNG ---
+
 
     fun createPost(content: String, topicId: String, imageUri: Uri?) {
         viewModelScope.launch {
             _uiState.value = CreatePostUiState.Loading
             try {
-                // Bước 1: Nếu có ảnh, tải ảnh lên trước
                 val imageUrl = if (imageUri != null) {
                     uploadImageAndGetUrl(imageUri)
                 } else {
                     null
                 }
 
-                // Nếu bước 1 thất bại, imageUrl sẽ là null, dừng lại và báo lỗi
                 if (imageUri != null && imageUrl == null) {
-                    _uiState.value = CreatePostUiState.Error("Failed to upload image.")
+                    _uiState.value = CreatePostUiState.Error("Tải ảnh thất bại.")
                     return@launch
                 }
 
-                // Bước 2: Tạo bài đăng với URL ảnh (nếu có)
                 val request = CreatePostRequest(content, imageUrl, topicId)
                 val response = postRepository.createPost(request)
                 Log.d("CreatePostViewModel", "Response: $response")
@@ -58,48 +96,44 @@ class CreatePostViewModel @Inject constructor(
                     _uiState.value = CreatePostUiState.Success
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    Log.e("CreatePostViewModel", "Failed to create post: ${response.code()} - $errorBody")
-                    _uiState.value = CreatePostUiState.Error("Failed to create post. Error: ${response.message()}")
+                    Log.e("CreatePostViewModel", "Tạo bài viết thất bại: ${response.code()} - $errorBody")
+                    _uiState.value = CreatePostUiState.Error("Tạo bài viết thất bại: ${response.message()}")
                 }
             } catch (e: Exception) {
-                Log.e("CreatePostViewModel", "Exception in createPost", e)
-                _uiState.value = CreatePostUiState.Error(e.message ?: "An unexpected error occurred")
+                Log.e("CreatePostViewModel", "Ngoại lệ trong createPost", e)
+                _uiState.value = CreatePostUiState.Error(e.message ?: "Đã xảy ra lỗi không mong muốn")
             }
         }
     }
 
     private suspend fun uploadImageAndGetUrl(imageUri: Uri): String? {
         return try {
-            // (2) Sử dụng 'application' đã được inject để lấy contentResolver
             val inputStream = application.contentResolver.openInputStream(imageUri)
             val fileBytes = inputStream?.readBytes()
             inputStream?.close()
 
             if (fileBytes == null) {
-                Log.e("CreatePostViewModel", "Could not read bytes from image Uri.")
+                Log.e("CreatePostViewModel", "Không thể đọc được file ảnh.")
                 return null
             }
 
             val requestBody = fileBytes.toRequestBody(
-                // Lấy kiểu MIME từ Uri
                 application.contentResolver.getType(imageUri)?.toMediaTypeOrNull()
             )
 
             val multipartBody = MultipartBody.Part.createFormData(
-                "file",
-                "image.jpg", // Tên file có thể tùy chỉnh hoặc lấy từ Uri nếu cần
-                requestBody
+                "file", "image.jpg", requestBody
             )
 
             val response = postRepository.uploadImage(multipartBody)
             if (response.isSuccessful) {
                 response.body()?.data?.url
             } else {
-                Log.e("CreatePostViewModel", "Image upload failed: ${response.code()} - ${response.message()}")
+                Log.e("CreatePostViewModel", "Tải ảnh thất bại: ${response.code()} - ${response.message()}")
                 null
             }
         } catch (e: Exception) {
-            Log.e("CreatePostViewModel", "Exception in uploadImageAndGetUrl", e)
+            Log.e("CreatePostViewModel", "Ngoại lệ trong uploadImageAndGetUrl", e)
             null
         }
     }

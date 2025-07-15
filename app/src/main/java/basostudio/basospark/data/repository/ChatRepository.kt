@@ -7,4 +7,6 @@ import javax.inject.Inject
 
 class ChatRepository @Inject constructor(private val apiService: ApiService) {
     suspend fun getChatRooms() = apiService.getChatRooms()
+    suspend fun getChatRoom(roomId: String) = apiService.getChatRoom(roomId)
+    suspend fun getChatMessages(roomId: String) = apiService.getChatMessages(roomId)
 }

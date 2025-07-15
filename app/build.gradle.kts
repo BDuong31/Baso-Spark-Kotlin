@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "basostudio.basospark"
-        minSdk = 36
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -101,7 +101,19 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation(platform("androidx.compose:compose-bom:2023.08.00")) // Use a recent BOM
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3") // Ensure Material3 is compatible
 
+    // Add these if not present, for ViewModel/Navigation integration with Hilt
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0") // Or latest
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("androidx.compose.material:material-icons-extended-android:1.6.7") // Or your Compose version
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
 }
 
 kapt {

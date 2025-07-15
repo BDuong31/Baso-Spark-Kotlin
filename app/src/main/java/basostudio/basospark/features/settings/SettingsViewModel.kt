@@ -20,7 +20,7 @@ class SettingsViewModel @Inject constructor(
     val themeMode = settingsManager.themeModeFlow
 
     fun onLogout() {
-        sessionManager.clearAuthToken()
+        sessionManager.clearSession()
     }
 
     fun onThemeChange(themeMode: ThemeMode) {

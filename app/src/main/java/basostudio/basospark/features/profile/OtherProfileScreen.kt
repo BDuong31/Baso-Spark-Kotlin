@@ -9,47 +9,40 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import basostudio.basospark.features.profile.PostGrid
+//import basostudio.basospark.features.profile.EditProfileScreen
+import basostudio.basospark.features.profile.ProfileContent
 import basostudio.basospark.features.profile.ProfileHeader
+import basostudio.basospark.features.profile.ProfileUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OtherProfileScreen(navController: NavController, viewModel: OtherProfileViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = (uiState as? OtherProfileUiState.Success)?.user?.username ?: "Profile") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                }
+    when (val state = uiState) {
+        is OtherProfileUiState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+        is OtherProfileUiState.Success -> {
+            ProfileContent(
+                navController = navController,
+                user = state.user,
+                userPosts = state.posts,
+                savedPosts = emptyList()
             )
         }
-    ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            when (val state = uiState) {
-                is OtherProfileUiState.Loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
-                is OtherProfileUiState.Success -> {
-                    Column {
-                        ProfileHeader(user = state.user)
-                        Button(
-                            onClick = { viewModel.toggleFollow() },
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
-                        ) {
-                            Text(if (state.isFollowing) "Unfollow" else "Follow")
-                        }
-                        PostGrid(posts = state.posts)
-                    }
-                }
-                is OtherProfileUiState.Error -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(state.message) }
+        is OtherProfileUiState.Error -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(text = state.message)
             }
         }
     }
 }
+
+

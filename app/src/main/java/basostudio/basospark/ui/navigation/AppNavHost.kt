@@ -16,26 +16,31 @@ import basostudio.basospark.features.auth.register.RegisterScreen
 import basostudio.basospark.features.chat.chat_room.ChatRoomScreen
 import basostudio.basospark.features.create_post.CreatePostScreen
 import basostudio.basospark.features.post_details.PostDetailsScreen
+import basostudio.basospark.features.post_saves.PostSavesScreen
+import basostudio.basospark.features.profile.ProfileScreen
 import basostudio.basospark.features.profile.other_profile.OtherProfileScreen
+import basostudio.basospark.features.search.SearchScreen
 import com.google.gson.Gson
 import basostudio.basospark.features.settings.SettingsScreen
+import basostudio.basospark.features.profile.EditProfileScreen
 
 @Composable
-fun AppNavHost(paddingValues: PaddingValues) {
+fun AppNavHost() {
     val navController = rememberNavController()
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
-    val startDestination = if (sessionManager.fetchAuthToken() != null) Screen.MainFlow.route else Screen.Login.route
+    val startDestination =
+        if (sessionManager.fetchAuthToken() != null) Screen.MainFlow.route else Screen.Login.route
 
     NavHost(navController = navController, startDestination = startDestination) {
         composable(Screen.Login.route) { LoginScreen(navController) }
         composable(Screen.Register.route) { RegisterScreen(navController) }
 
-        // Luồng chính sau khi đăng nhập
         composable(Screen.MainFlow.route) { MainScreen(mainNavController = navController) }
 
-        // Các màn hình chi tiết
         composable(Screen.CreatePost.route) { CreatePostScreen(navController) }
+
+        composable(Screen.Profile.route) { ProfileScreen(navController) }
 
         composable(
             route = Screen.PostDetails.route,
@@ -64,5 +69,9 @@ fun AppNavHost(paddingValues: PaddingValues) {
             }
         }
         composable(Screen.Settings.route) { SettingsScreen(navController) }
+        composable(Screen.Search.route){ SearchScreen(navController) }
+        composable(Screen.EditProfile.route) {
+            EditProfileScreen(navController = navController)
+        }
     }
 }

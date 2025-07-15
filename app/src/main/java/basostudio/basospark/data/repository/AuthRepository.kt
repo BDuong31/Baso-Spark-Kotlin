@@ -10,4 +10,6 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
 
     suspend fun login(loginRequest: LoginRequest) = apiService.login(loginRequest)
     suspend fun register(registerRequest: RegisterRequest) = apiService.register(registerRequest)
+    suspend fun loginGoogle(registerRequest: RegisterRequest) = apiService.loginGoogle()
+
 }

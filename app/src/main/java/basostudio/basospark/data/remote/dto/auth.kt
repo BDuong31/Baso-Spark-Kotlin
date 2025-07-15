@@ -11,7 +11,8 @@ data class RegisterRequest(
     val email: String,
     val firstName: String,
     val lastName: String,
-    val password: String
+    val password: String,
+    val avatar: String? = null
 )
 
 data class AuthResponse(

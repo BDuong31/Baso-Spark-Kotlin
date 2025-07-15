@@ -1,7 +1,6 @@
 package basostudio.basospark.features.chat.chat_list
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import basostudio.basospark.data.model.ChatRoom
@@ -31,13 +30,14 @@ class ChatListViewModel @Inject constructor(
         fetchChatRooms()
     }
 
-    fun fetchChatRooms() { // Có thể gọi lại để làm mới
+    fun fetchChatRooms() {
         viewModelScope.launch {
             _uiState.value = ChatListUiState.Loading
             try {
                 val response = chatRepository.getChatRooms()
                 if (response.isSuccessful && response.body() != null) {
-                    _uiState.value = ChatListUiState.Success(response.body()!!.data)
+                    val chatRooms = response.body()?.data ?: emptyList()
+                    _uiState.value = ChatListUiState.Success(chatRooms)
                 } else {
                     _uiState.value = ChatListUiState.Error("Failed to load chats. Error: ${response.message()}")
                 }

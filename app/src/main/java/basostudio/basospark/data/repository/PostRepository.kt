@@ -18,17 +18,18 @@ class PostRepository @Inject constructor(private val apiService: ApiService) {
 
     suspend fun uploadImage(imagePart: MultipartBody.Part) = apiService.uploadImage(imagePart)
 
-    suspend fun getPosts(page: Int, limit: Int, searchQuery: String? = null) =
-        apiService.getPosts(page, limit, searchQuery)
+    suspend fun getPosts(page: Int, limit: Int, searchQuery: String? = null, userId: String? = null) =
+        apiService.getPosts(page, limit, searchQuery, userId)
     fun getPostsStream(searchQuery: String? = null): Flow<PagingData<Post>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 20, // Số mục trên mỗi trang
+                pageSize = 20,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { PostPagingSource(apiService, searchQuery) }
         ).flow
     }
+
     suspend fun getPostById(postId: String) = apiService.getPostById(postId)
 
     suspend fun createPost(request: CreatePostRequest) = apiService.createPost(request)

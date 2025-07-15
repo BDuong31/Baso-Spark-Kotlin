@@ -1,7 +1,9 @@
 package basostudio.basospark.features.chat.chat_list
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -12,9 +14,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -25,28 +29,41 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun ChatListScreen(navController: NavController, viewModel: ChatListViewModel = hiltViewModel()) {
-    val uiState by viewModel.uiState.collectAsState()
+    Scaffold(
+    ) { paddingValues ->
+        val uiState by viewModel.uiState.collectAsState()
 
-    when(val state = uiState) {
-        is ChatListUiState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        }
-        is ChatListUiState.Success -> {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(state.chatRooms) { chatRoom ->
-                    ChatRoomItem(chatRoom = chatRoom, onClick = {
-                        val userJson = Gson().toJson(chatRoom.messager)
-                        navController.currentBackStackEntry?.savedStateHandle?.set("user", userJson)
-                        navController.navigate(Screen.ChatRoom.createRoute(chatRoom.id))
-                    })
+        when (val state = uiState) {
+            is ChatListUiState.Loading -> {
+                Box(modifier = Modifier.fillMaxSize().statusBarsPadding().padding(paddingValues), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
                 }
             }
-        }
-        is ChatListUiState.Error -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(state.message)
+
+            is ChatListUiState.Success -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .statusBarsPadding()
+                        .padding(paddingValues),
+                ) {
+                    items(state.chatRooms) { chatRoom ->
+                        ChatRoomItem(chatRoom = chatRoom, onClick = {
+                            val userJson = Gson().toJson(chatRoom.messager)
+                            navController.currentBackStackEntry?.savedStateHandle?.set(
+                                "user",
+                                userJson
+                            )
+                            navController.navigate(Screen.ChatRoom.createRoute(chatRoom.id))
+                        })
+                    }
+                }
+            }
+
+            is ChatListUiState.Error -> {
+                Box(modifier = Modifier.fillMaxSize().statusBarsPadding().padding(paddingValues), contentAlignment = Alignment.Center) {
+                    Text(state.message)
+                }
             }
         }
     }

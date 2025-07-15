@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -22,14 +23,37 @@ fun SearchScreen(navController: NavController, viewModel: SearchViewModel = hilt
     val uiState by viewModel.uiState.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { viewModel.onQueryChanged(it) },
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
-            placeholder = { Text("Search for posts...") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search Icon") }
-        )
+
+    Column(
+        modifier =
+            Modifier.fillMaxSize()
+            .statusBarsPadding() // <-- Thêm dòng này
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Thanh tìm kiếm
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { viewModel.onQueryChanged(it) },
+                modifier = Modifier.weight(1f),
+                placeholder = { Text("Search for posts...") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search Icon") }
+            )
+
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Đóng tìm kiếm"
+                )
+            }
+        }
 
         when (val state = uiState) {
             is SearchUiState.Idle -> {
@@ -52,11 +76,12 @@ fun SearchScreen(navController: NavController, viewModel: SearchViewModel = hilt
                         items(state.results) { post ->
                             PostItem(
                                 post = post,
-                                // TODO: Cần truyền các callback để xử lý sự kiện
                                 onPostClick = { /* ... */ },
                                 onLikeClick = { /* ... */ },
+                                onCommentClick = { /* ... */ },
                                 onSaveClick = { /* ... */ },
-                                onAuthorClick = { /* ... */ }
+                                onAuthorClick = { /* ... */ },
+                                onMoreOptionsClick = { /* ... */ }
                             )
                         }
                     }

@@ -5,16 +5,27 @@ import basostudio.basospark.core.data.SessionManager
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AuthInterceptor(context: Context) : Interceptor {
+class AuthInterceptor(private val context: Context) : Interceptor {
     private val sessionManager = SessionManager(context)
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val requestBuilder = chain.request().newBuilder()
+        val originalRequest = chain.request()
+        val requestBuilder = originalRequest.newBuilder()
 
-        sessionManager.fetchAuthToken()?.let { token ->
+        val token = sessionManager.fetchAuthToken()
+
+        if (token != null) {
             requestBuilder.addHeader("Authorization", "Bearer $token")
         }
 
-        return chain.proceed(requestBuilder.build())
+        val request = requestBuilder.build()
+
+        val response = chain.proceed(request)
+
+//        if (response.code == 401) {
+//            sessionManager.clearAuthToken()
+//        }
+
+        return response
     }
 }

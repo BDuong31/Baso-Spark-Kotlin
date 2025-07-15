@@ -3,6 +3,9 @@ package basostudio.basospark.core.di
 import android.content.Context
 import basostudio.basospark.core.data.SessionManager
 import basostudio.basospark.core.data.SettingsManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -30,5 +33,16 @@ object AppModule {
     @Singleton
     fun provideSettingsManager(@ApplicationContext context: Context): SettingsManager {
         return SettingsManager(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoogleSignInClient(@ApplicationContext context: Context): GoogleSignInClient {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            // Yêu cầu idToken, bạn sẽ dùng token này để gửi về server
+            .requestIdToken("697579782317-tjcpc3k2in99vskgkbgms4jsv1o8ro2l.apps.googleusercontent.com") // <-- THAY THẾ BẰNG WEB CLIENT ID CỦA BẠN
+            .requestEmail()
+            .build()
+        return GoogleSignIn.getClient(context, gso)
     }
 }

@@ -1,5 +1,6 @@
 package basostudio.basospark.core.di
 
+
 import android.content.Context
 import basostudio.basospark.core.network.AuthInterceptor
 import basostudio.basospark.data.remote.ApiService
@@ -19,7 +20,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "http://192.168.1.152:3000/"
+    private const val BASE_URL = "http://192.168.1.111:3000/"
 
     @Provides
     @Singleton
@@ -61,6 +62,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideFileRepository(apiService: ApiService, @ApplicationContext context: Context): FileRepository {
+        return FileRepositoryImpl(apiService, context)
+    }
+
+    @Provides
+    @Singleton
     fun provideUserRepository(apiService: ApiService): UserRepository {
         return UserRepository(apiService)
     }
@@ -82,4 +89,9 @@ object NetworkModule {
         return ChatRepository(apiService)
     }
 
+    @Provides
+    @Singleton
+    fun provideTopicRepository(apiService: ApiService): TopicRepository {
+        return TopicRepository(apiService)
+    }
 }

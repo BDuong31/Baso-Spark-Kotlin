@@ -6,9 +6,11 @@ data class User(
     val firstName: String,
     val lastName: String,
     val email: String?,
+    val phone: String?,
+    val websiteUrl: String?,
     val avatar: String?,
     val cover: String?,
     val bio: String?,
     val followerCount: Int = 0,
-    val postCount: Int = 0
+    val postCount: Int = 0,
 )
