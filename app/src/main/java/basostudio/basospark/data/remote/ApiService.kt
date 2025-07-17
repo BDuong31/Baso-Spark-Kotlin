@@ -3,6 +3,7 @@ package basostudio.basospark.data.remote
 import basostudio.basospark.data.model.ChatMessage
 import basostudio.basospark.data.model.ChatRoom
 import basostudio.basospark.data.model.Comment
+import basostudio.basospark.data.model.FollowerInfo
 import basostudio.basospark.data.model.IMessage
 import basostudio.basospark.data.model.Notification
 import basostudio.basospark.data.model.Post
@@ -50,7 +51,8 @@ interface ApiService {
         @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 20,
         @Query("userId") userId: String? = null,
-        @Query("str") searchQuery: String? = null // Thêm query param
+        @Query("str") searchQuery: String? = null, // Thêm query param
+        @Query("topicId") topicId: String? = null
     ): Response<PaginatedResponse<Post>>
 
     @POST("v1/posts")
@@ -128,4 +130,19 @@ interface ApiService {
         @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 50
     ): Response<PaginatedResponse<Notification>>
+
+    // === Following ===
+    @GET("v1/users/{userId}/followers")
+    suspend fun getFollowers(
+        @Path("userId") userId: String,
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 20
+    ): Response<PaginatedResponse<FollowerInfo>>
+
+    @GET("v1/users/{userId}/followings")
+    suspend fun getFollowings(
+        @Path("userId") userId: String,
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 20
+    ): Response<PaginatedResponse<FollowerInfo>>
 }

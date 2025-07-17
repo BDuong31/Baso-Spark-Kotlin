@@ -82,9 +82,8 @@ fun PostItem(
                         contentDescription = "Post Image",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .aspectRatio(16f / 9f)
                             .clip(RoundedCornerShape(16.dp)),
-                        contentScale = ContentScale.Crop,
+                        contentScale = ContentScale.FillWidth,
                         placeholder = painterResource(R.drawable.ic_launcher_background), // Thay bằng placeholder của bạn
                         error = painterResource(id = R.drawable.ic_launcher_foreground) // Thay bằng ảnh lỗi của bạn
                     )

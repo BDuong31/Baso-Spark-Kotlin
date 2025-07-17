@@ -24,7 +24,6 @@ import basostudio.basospark.ui.navigation.Screen
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
-// KHÔNG CẦN @OptIn(ExperimentalMaterial3Api::class) nữa
 @Composable
 fun FeedScreen(
     navController: NavController,

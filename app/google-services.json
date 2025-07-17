@@ -12,7 +12,12 @@
           "package_name": "basostudio.basospark"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "134360779568-9ucpjucjmfk634o572a81u39i1m80pov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCfesLLzlFvbQxLutvFLEXUBGxdxwIU9oc"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134360779568-9ucpjucjmfk634o572a81u39i1m80pov.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

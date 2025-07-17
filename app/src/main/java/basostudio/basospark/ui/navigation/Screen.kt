@@ -5,6 +5,7 @@ import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Bookmarks
 import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -41,5 +42,10 @@ sealed class Screen(val route: String, val label: String? = null, val icon: Imag
     object Notifications : Screen("notifications_screen", "Activity", Icons.Default.Notifications)
     object Settings : Screen("settings_screen")
     object AddPostAction : Screen("add_post_action", null, Icons.Default.AddBox)
-
+    object Explore : Screen("explore_screen", "Explore", Icons.Default.Explore)
+    object Follow : Screen("follow_screen/{userId}/{username}/{tabIndex}") {
+        fun createRoute(userId: String, username: String, initialTabIndex: Int): String {
+            return "follow_screen/$userId/$username/$initialTabIndex"
+        }
+    }
 }

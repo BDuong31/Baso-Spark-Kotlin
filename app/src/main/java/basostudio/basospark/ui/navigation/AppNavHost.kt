@@ -15,6 +15,7 @@ import basostudio.basospark.features.auth.login.LoginScreen
 import basostudio.basospark.features.auth.register.RegisterScreen
 import basostudio.basospark.features.chat.chat_room.ChatRoomScreen
 import basostudio.basospark.features.create_post.CreatePostScreen
+import basostudio.basospark.features.explore.ExploreScreen
 import basostudio.basospark.features.post_details.PostDetailsScreen
 import basostudio.basospark.features.post_saves.PostSavesScreen
 import basostudio.basospark.features.profile.ProfileScreen
@@ -23,6 +24,7 @@ import basostudio.basospark.features.search.SearchScreen
 import com.google.gson.Gson
 import basostudio.basospark.features.settings.SettingsScreen
 import basostudio.basospark.features.profile.EditProfileScreen
+import basostudio.basospark.features.follow.FollowScreen
 
 @Composable
 fun AppNavHost() {
@@ -72,6 +74,20 @@ fun AppNavHost() {
         composable(Screen.Search.route){ SearchScreen(navController) }
         composable(Screen.EditProfile.route) {
             EditProfileScreen(navController = navController)
+        }
+
+        composable(Screen.Explore.route){
+            ExploreScreen(navController)
+        }
+        composable(
+            route = Screen.Follow.route,
+            arguments = listOf(
+                navArgument("userId") { type = NavType.StringType },
+                navArgument("username") { type = NavType.StringType },
+                navArgument("tabIndex") { type = NavType.StringType }
+            )
+        ) {
+            FollowScreen(navController)
         }
     }
 }

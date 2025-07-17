@@ -1,5 +1,6 @@
 package basostudio.basospark.features.profile
 
+import android.R.attr.onClick
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -31,7 +32,7 @@ import basostudio.basospark.data.model.User
 import basostudio.basospark.features.feed.components.PostItem
 import basostudio.basospark.ui.navigation.Screen
 import coil.compose.AsyncImage
-
+import androidx.compose.foundation.clickable
 @Composable
 fun ProfileScreen(
     navController: NavController,
@@ -85,6 +86,7 @@ fun ProfileContent(
     user: User,
     userPosts: List<Post>,
     savedPosts: List<Post>
+
 ) {
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabTitles = listOf("Bài viết", "Đã lưu")
@@ -94,7 +96,13 @@ fun ProfileContent(
             ProfileHeader(
                 user = user,
                 onNavigateBack = { navController.popBackStack() },
-                navController = navController
+                navController = navController,
+                onFollowersClick = {
+                    navController.navigate(Screen.Follow.createRoute(user.id, user.username, 0))
+                },
+                onFollowingClick = {
+                    navController.navigate(Screen.Follow.createRoute(user.id, user.username, 1))
+                }
             )
         }
 
@@ -141,7 +149,7 @@ fun ProfileContent(
 }
 
 @Composable
-fun ProfileHeader(user: User, onNavigateBack: () -> Unit, navController: NavController) {
+fun ProfileHeader(user: User, onNavigateBack: () -> Unit, navController: NavController, onFollowersClick: () -> Unit, onFollowingClick: () -> Unit) {
     Column {
         Box(
             modifier = Modifier
@@ -214,16 +222,19 @@ fun ProfileHeader(user: User, onNavigateBack: () -> Unit, navController: NavCont
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 ProfileStat(value = user.postCount, label = "Bài viết")
-                ProfileStat(value = user.followerCount, label = "Người theo dõi")
-                ProfileStat(value = 0, label = "Đang theo dõi") // Thay bằng dữ liệu thật
+                ProfileStat(value = user.followerCount, label = "Followers", onClick = onFollowersClick)
+                ProfileStat(value = 0, label = "Following", onClick = onFollowingClick)
             }
         }
     }
 }
 
 @Composable
-fun ProfileStat(value: Int, label: String) {
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+fun ProfileStat(value: Int, label: String, onClick: () -> Unit = {}) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.clickable(onClick = onClick)
+    ) {
         Text(text = value.toString(), fontWeight = FontWeight.Bold, fontSize = 16.sp)
         Text(text = label, style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
     }

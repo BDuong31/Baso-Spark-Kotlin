@@ -21,7 +21,7 @@ class SocketManager @Inject constructor(
 
     companion object {
         // Thay bằng IP và Port của server NestJS của bạn
-        private const val SERVER_URL = "http://192.168.1.111:3000/chat"
+        private const val SERVER_URL = "https://baso-music.io.vn/apis/chat"
     }
 
     /**

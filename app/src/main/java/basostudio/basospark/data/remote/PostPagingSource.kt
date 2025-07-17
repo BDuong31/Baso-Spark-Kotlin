@@ -10,7 +10,8 @@ private const val STARTING_PAGE_INDEX = 1
 
 class PostPagingSource(
     private val apiService: ApiService,
-    private val searchQuery: String? = null
+    private val searchQuery: String? = null,
+    private val topicId: String? = null
 ) : PagingSource<Int, Post>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Post> {
@@ -19,7 +20,8 @@ class PostPagingSource(
             val response = apiService.getPosts(
                 page = page,
                 limit = params.loadSize,
-                searchQuery = searchQuery
+                searchQuery = if (searchQuery?.isNotBlank() == true) searchQuery else null,
+                topicId = topicId
             )
             val posts = response.body()?.data ?: emptyList()
 

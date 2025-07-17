@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
     // Sử dụng 10.0.2.2 để kết nối tới localhost từ máy ảo Android
-    private const val BASE_URL = "http://192.168.1.111:3000/"
+    private const val BASE_URL = "https://baso-music.io.vn/apis/"
 
     fun create(context: Context): ApiService {
         val loggingInterceptor = HttpLoggingInterceptor().apply {

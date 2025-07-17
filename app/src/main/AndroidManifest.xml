@@ -31,7 +31,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="com.googleusercontent.apps.697579782317-n2nebdf2v5jp7v5lbkvh1fi08p62ulsu"
+                    android:host="oauth2redirect"/>
+            </intent-filter>
         </activity>
+
         <service
             android:name=".core.services.MyFirebaseMessagingService"
             android:exported="false">
