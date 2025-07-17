@@ -29,7 +29,7 @@ interface ApiService {
     suspend fun login(@Body loginRequest: LoginRequest): Response<DataResponse<AuthResponse>>
 
     @POST("v1/register")
-    suspend fun register(@Body registerRequest: RegisterRequest): Response<DataResponse<User>>
+    suspend fun register(@Body registerRequest: RegisterRequest): Response<DataResponse<String>>
 
     @POST("v1/google-login")
     suspend fun loginGoogle(): Response<DataResponse<AuthResponse>>
