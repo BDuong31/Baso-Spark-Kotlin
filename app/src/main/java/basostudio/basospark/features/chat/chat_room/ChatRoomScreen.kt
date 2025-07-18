@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
@@ -18,7 +19,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -100,12 +104,58 @@ fun ChatRoomScreen(
             )
         },
         bottomBar = {
-            OutlinedTextField(
-                value = text,
-                onValueChange = { text = it },
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                placeholder = { Text("Type a message...") },
-                trailingIcon = {
+//            OutlinedTextField(
+//                value = text,
+//                onValueChange = { text = it },
+//                modifier = Modifier.fillMaxWidth().padding(8.dp),
+//                placeholder = { Text("Type a message...") },
+//                trailingIcon = {
+//                    IconButton(
+//                        onClick = {
+//                            if (text.isNotBlank()) {
+//                                viewModel.sendMessage(receiverUser.id, text)
+//                                text = ""
+//                            }
+//                        },
+//                        enabled = text.isNotBlank()
+//                    ) {
+//                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send message")
+//                    }
+//                }
+//            )
+            Box(
+//                modifier = Modifier.fillMaxSize()
+            ) {
+                NavigationBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .navigationBarsPadding()
+                        .padding(start = 24.dp, end = 24.dp, bottom = 0.dp)
+                        .wrapContentWidth()
+                        .clip(RoundedCornerShape(24.dp)),
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 8.dp
+                ) {
+                    BasicTextField(
+                        value = text,
+                        onValueChange = { text = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 24.dp, end = 24.dp)
+                            .weight(1f),
+                        textStyle = TextStyle(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontSize = 18.sp
+                        ),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                        decorationBox = { innerTextField ->
+                        if (text.isEmpty()) {
+                            Text("Nhập tin nhắn...", color = androidx.compose.ui.graphics.Color.Gray, fontSize = 18.sp)
+                        }
+                            innerTextField()
+                        }
+                    )
+
                     IconButton(
                         onClick = {
                             if (text.isNotBlank()) {
@@ -118,7 +168,7 @@ fun ChatRoomScreen(
                         Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send message")
                     }
                 }
-            )
+            }
         }
     ) { padding ->
         when (uiState) {
@@ -158,6 +208,7 @@ fun MessageItem(message: IMessage, isMyMessage: Boolean) {
         verticalAlignment = Alignment.CenterVertically
 
     ) {
+        message.user.avatarUrl.replace("localhost", "192.168.1.111")
         AsyncImage(
             model = message.user.avatarUrl,
             contentDescription = "Avatar",

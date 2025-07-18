@@ -64,9 +64,7 @@ fun EditProfileScreen(
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color(0xFF121212) // Màu nền tối
     ) {
-        // Dựa vào trạng thái từ ViewModel để quyết định hiển thị gì
         when (val state = uiState) {
             is EditProfileUiState.Loading -> {
                 // Hiển thị vòng xoay khi đang tải dữ liệu ban đầu
@@ -129,7 +127,6 @@ private fun EditProfileContent(
         ) {
             Text(
                 text = "EDIT PROFILE",
-                color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 16.dp, start = 4.dp)
@@ -210,14 +207,14 @@ private fun EditableHeader(
                 Button(
                     onClick = onSave,
                     shape = CircleShape,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                     enabled = !isSaving,
                     contentPadding = PaddingValues(horizontal = 24.dp)
                 ) {
                     if (isSaving) {
                         CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.Black, strokeWidth = 2.dp)
                     } else {
-                        Text("Save", color = Color.Black, fontWeight = FontWeight.Bold)
+                        Text("Save", fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -284,7 +281,6 @@ private fun InfoRowTextField(
             BasicTextField(
                 value = value,
                 onValueChange = onValueChange,
-                textStyle = TextStyle(color = Color.White, fontSize = 16.sp),
                 cursorBrush = SolidColor(Color.White),
                 modifier = Modifier.fillMaxWidth()
             )

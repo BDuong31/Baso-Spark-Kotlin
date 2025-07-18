@@ -20,7 +20,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "https://baso-music.io.vn/apis/"
+    private const val BASE_URL = "http://192.168.1.111:3000/"
 
     @Provides
     @Singleton

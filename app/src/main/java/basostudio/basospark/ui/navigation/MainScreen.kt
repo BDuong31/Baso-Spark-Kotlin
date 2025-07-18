@@ -99,6 +99,7 @@ fun MainScreen(mainNavController: NavController, viewModel: MainViewModel = hilt
         Screen.ChatList,
         Screen.PostSaves,
         Screen.Profile,
+        Screen.Explore
     )
     var selectedOption by remember { mutableStateOf(PostSavesFilter.ALL) }
     val sessionManager = SessionManager(mainNavController.context)

@@ -26,7 +26,7 @@ import com.google.gson.Gson
 import basostudio.basospark.data.model.ChatRoom
 import basostudio.basospark.ui.navigation.Screen
 import androidx.hilt.navigation.compose.hiltViewModel
-
+import basostudio.basospark.R
 @Composable
 fun ChatListScreen(navController: NavController, viewModel: ChatListViewModel = hiltViewModel()) {
     Scaffold(
@@ -78,8 +78,9 @@ fun ChatRoomItem(chatRoom: ChatRoom, onClick: () -> Unit) {
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        val avatarUrl = chatRoom.messager.avatar.replace("localhost", "192.168.1.111")
         AsyncImage(
-            model = chatRoom.messager.avatar,
+            model = avatarUrl ?: R.drawable.defaultavatar,
             contentDescription = "Avatar",
             modifier = Modifier.size(56.dp).clip(CircleShape)
         )
