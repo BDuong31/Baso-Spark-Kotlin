@@ -197,7 +197,7 @@ fun CreatePostScreen(navController: NavController, viewModel: CreatePostViewMode
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top
             ) {
-                currentUser?.avatar?.replace("localhost","192.168.1.111")
+                currentUser?.avatar?.replace("localhost","172.20.10.6")
                 AsyncImage(
                     model = currentUser?.avatar,
                     contentDescription = "My Avatar",

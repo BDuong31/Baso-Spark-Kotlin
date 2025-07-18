@@ -33,7 +33,7 @@ fun ExplorePostItem(post: Post, modifier: Modifier = Modifier) {
     ) {
         Column {
             if (!post.image.isNullOrBlank()) {
-                val imageUrl = post.image.replace("localhost", "192.168.1.111")
+                val imageUrl = post.image.replace("localhost", "172.20.10.6")
                 Log.d("ExplorePostItem", "Image URL: $imageUrl")
                 AsyncImage(
                     model = imageUrl,
@@ -56,7 +56,7 @@ fun ExplorePostItem(post: Post, modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    val avatarUrl = post.author.avatar?.replace("localhost", "192.168.1.111") ?: post.author.avatar
+                    val avatarUrl = post.author.avatar?.replace("localhost", "172.20.10.6") ?: post.author.avatar
                     Log.d("ExplorePostItem", "Avatar URL: $avatarUrl")
                     AsyncImage(
                         model = avatarUrl ?: R.drawable.defaultavatar,

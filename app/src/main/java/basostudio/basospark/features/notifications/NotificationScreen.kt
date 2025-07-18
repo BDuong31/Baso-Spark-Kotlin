@@ -28,7 +28,7 @@ import coil.compose.AsyncImage
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import basostudio.basospark.data.model.Notification
-
+import basostudio.basospark.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationScreen(
@@ -115,8 +115,9 @@ fun NotificationItem(notification: Notification) {
         verticalAlignment = Alignment.Top
     ) {
         Box(contentAlignment = Alignment.BottomEnd) {
+            notification.sender?.avatar?.replace("localhost", "172.20.10.6")
             AsyncImage(
-                model = notification.sender?.avatar,
+                model = notification.sender?.avatar ?: R.drawable.defaultavatar,
                 contentDescription = "Sender Avatar",
                 modifier = Modifier.size(50.dp).clip(CircleShape)
             )

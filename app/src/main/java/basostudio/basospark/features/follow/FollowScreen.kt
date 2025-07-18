@@ -24,7 +24,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import basostudio.basospark.data.model.FollowerInfo
 import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
-
+import basostudio.basospark.R
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun FollowScreen(
@@ -112,8 +112,9 @@ fun UserItem(user: FollowerInfo) {
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        user.avatar?.replace("localhost", "172.20.10.6")
         AsyncImage(
-            model = user.avatar,
+            model = user.avatar ?: R.drawable.defaultavatar,
             contentDescription = "Avatar",
             modifier = Modifier.size(50.dp).clip(CircleShape),
             contentScale = ContentScale.Crop

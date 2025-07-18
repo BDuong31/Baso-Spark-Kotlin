@@ -156,9 +156,9 @@ fun ProfileHeader(user: User, onNavigateBack: () -> Unit, navController: NavCont
                 .fillMaxWidth()
                 .height(210.dp)
         ) {
-            val coverUrl = user.cover?.replace("localhost", "192.168.1.139") ?: user.cover
+            user.cover?.replace("localhost", "172.20.10.6")
             AsyncImage(
-                model = coverUrl ?: R.drawable.defaulcover,
+                model = user.cover ?: R.drawable.defaulcover,
                 contentDescription = "${user.username}'s avatar",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -174,9 +174,9 @@ fun ProfileHeader(user: User, onNavigateBack: () -> Unit, navController: NavCont
             ) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
             }
-            val AvatarUrl = user.avatar?.replace("localhost", "172.20.10.2") ?: user.avatar
+            user.avatar?.replace("localhost", "172.20.10.6") ?: user.avatar
             AsyncImage(
-                model = AvatarUrl ?: R.drawable.defaultavatar,
+                model = user.avatar ?: R.drawable.defaultavatar,
                 contentDescription = "${user.username}'s avatar",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

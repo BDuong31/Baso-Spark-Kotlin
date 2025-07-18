@@ -78,7 +78,7 @@ fun ChatRoomItem(chatRoom: ChatRoom, onClick: () -> Unit) {
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val avatarUrl = chatRoom.messager.avatar.replace("localhost", "192.168.1.111")
+        val avatarUrl = chatRoom.messager.avatar.replace("localhost", "172.20.10.6")
         AsyncImage(
             model = avatarUrl ?: R.drawable.defaultavatar,
             contentDescription = "Avatar",

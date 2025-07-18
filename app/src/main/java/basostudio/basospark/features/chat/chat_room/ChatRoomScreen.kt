@@ -208,7 +208,7 @@ fun MessageItem(message: IMessage, isMyMessage: Boolean) {
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-        message.user.avatarUrl.replace("localhost", "192.168.1.111")
+        message.user.avatarUrl.replace("localhost", "172.20.10.6")
         AsyncImage(
             model = message.user.avatarUrl,
             contentDescription = "Avatar",

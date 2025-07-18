@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import basostudio.basospark.data.model.Comment
-
+import basostudio.basospark.R
 @Composable
 fun CommentItem(comment: Comment) {
     Row(
@@ -19,8 +19,9 @@ fun CommentItem(comment: Comment) {
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp)
     ) {
+        comment.user.avatar?.replace("localhost", "172.20.10.6")
         AsyncImage(
-            model = comment.user.avatar,
+            model = comment.user.avatar ?: R.drawable.defaultavatar,
             contentDescription = "Commenter Avatar",
             modifier = Modifier
                 .size(32.dp)

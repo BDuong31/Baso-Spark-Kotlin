@@ -106,6 +106,7 @@ fun AppDrawerContent(
 //                        .padding(16.dp), // Thêm padding cho cả Row
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    user.avatar?.replace("localhost", "172.20.10.6")
                     AsyncImage(
                         model = user.avatar ?: R.drawable.defaultavatar,
                         contentDescription = "User Avatar",

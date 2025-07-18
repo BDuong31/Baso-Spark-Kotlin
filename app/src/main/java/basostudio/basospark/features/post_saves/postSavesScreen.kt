@@ -120,7 +120,7 @@ private fun PostListContentMedia(
     ) {
         items(items = posts, key = { it.id }) { post ->
             Log.d("PostListContentMedia", "Rendering post: ${post.id}")
-            val imageUrl = post.image?.replace("localhost", "192.168.1.111") ?: ""
+            val imageUrl = post.image?.replace("localhost", "172.20.10.6") ?: ""
             AsyncImage(
                 model = imageUrl,
                 contentDescription = "Post Image",

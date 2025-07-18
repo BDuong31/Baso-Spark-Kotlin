@@ -31,7 +31,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import basostudio.basospark.R // Thay thế bằng R file của bạn
 import coil.compose.AsyncImage
-
 @Composable
 fun EditProfileScreen(
     navController: NavController,
@@ -181,6 +180,7 @@ private fun EditableHeader(
             .fillMaxWidth()
             .height(220.dp)
     ) {
+        coverUrl?.replace("localhost", "172.20.10.6")
         AsyncImage(
             model = coverUrl?.ifEmpty { null } ?: R.drawable.defaulcover,
             contentDescription = "Cover photo",

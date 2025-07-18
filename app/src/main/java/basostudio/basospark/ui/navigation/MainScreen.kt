@@ -240,11 +240,10 @@ fun MainScreen(mainNavController: NavController, viewModel: MainViewModel = hilt
                                     IconButton(onClick = { mainNavController.navigate(Screen.CreatePost.route) }) {
                                         Icon(Icons.Default.Add, contentDescription = "Create Post")
                                     }
-                                    val avatarUrl = user?.avatar?.replace("localhost", "172.20.10.2")
+                                    user?.avatar?.replace("localhost", "172.20.10.6")
 
-                                    // 4. THÊM MODIFIER.CLICKABLE VÀO ASYNCIMAGE
                                     AsyncImage(
-                                        model = avatarUrl ?: R.drawable.defaultavatar,
+                                        model = user?.avatar ?: R.drawable.defaultavatar,
                                         contentDescription = "$user.username's avatar",
                                         modifier = Modifier
                                             .size(42.dp)

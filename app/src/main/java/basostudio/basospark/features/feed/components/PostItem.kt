@@ -75,7 +75,7 @@ fun PostItem(
                 // Ảnh bài viết
                 if (!post.image.isNullOrBlank()) {
                     Spacer(modifier = Modifier.height(12.dp))
-                    val imageUrl = post.image.replace("localhost", "192.168.1.111")
+                    val imageUrl = post.image.replace("localhost", "172.20.10.6")
 
                     AsyncImage(
                         model = imageUrl,
@@ -120,7 +120,7 @@ private fun PostHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        avatarUrl?.replace("localhost", "192.168.1.111") ?: avatarUrl
+        avatarUrl?.replace("localhost", "172.20.10.6") ?: avatarUrl
         AsyncImage(
             model = avatarUrl ?: R.drawable.defaultavatar,
             contentDescription = "$username's avatar",
